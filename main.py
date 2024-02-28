@@ -1,58 +1,68 @@
-from pynput.mouse import Button, Controller as MouseController
-from pynput.keyboard import Key, Controller as KeyboardController
+from pynput import mouse, keyboard
 from time import sleep
 import ctypes
 
-PROCESS_PER_MONITOR_DPI_AWARE = 2
-ctypes.windll.shcore.SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE)
+# PROCESS_PER_MONITOR_DPI_AWARE = 2
+# ctypes.windll.shcore.SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE)
 
 
 class Controller:
+    wait = 0.5
     """
-    Class that controlls and implement given instructions
+    Class that controls and implement given instructions
     """
-    def __init__(self):
-        self.mouse = MouseController()
-        self.keyboard = KeyboardController()
 
-mouse.position = (26, 1062)
-mouse.press(Button.left)
-mouse.release(Button.left)
+    def __init__(self) -> None:
+        self.mouse = mouse.Controller()
+        self.keyboard = keyboard.Controller()
+        # sleep(Controller.wait)
 
-sleep(0.1)
+    def type_button(self, button):
+        self.keyboard.press(button)
+        self.keyboard.release(button)
+        sleep(Controller.wait)
 
-keyboard.type('paint')
-sleep(0.5)
-keyboard.press(Key.enter)
-sleep(0.5)
-# keyboard.press(Key.cmd_l)
-# keyboard.release(Key.cmd_l)
-sleep(0.5)
-with keyboard.pressed(Key.cmd_l):
-    keyboard.press(Key.up)
-    keyboard.release(Key.up)
+    def press_and_hold(self, hold_button, press_button):
+        with self.keyboard.pressed(hold_button):
+            self.keyboard.press(press_button)
+            self.keyboard.release(press_button)
+            # sleep(Controller.wait)
 
-sleep(0.5)
-mouse.position = (2272, 93)
-sleep(0.5)
-mouse.press(Button.left)
-mouse.release(Button.left)
-sleep(0.5)
-mouse.position = (2790, 133)
-sleep(0.5)
-mouse.press(Button.left)
-mouse.release(Button.left)
-sleep(0.5)
-mouse.position = (2790, 317)
-sleep(0.5)
-mouse.press(Button.left)
-mouse.release(Button.left)
-sleep(0.5)
-mouse.position = (2119, 499)
-sleep(0.5)
-mouse.press(Button.left)
-for _ in range(250):
-    mouse.move(1, 0)
-    sleep(0.0001)
-mouse.release(Button.left)
+    def type(self, text):
+        self.keyboard.type(text)
+        sleep(Controller.wait)
 
+    def click_button(self, button):
+        self.mouse.press(button)
+        self.mouse.release(button)
+        sleep(Controller.wait)
+
+    def place_pointer(self, coordinate_x, coordinate_y):
+        self.mouse.position = (coordinate_x, coordinate_y)
+        sleep(Controller.wait)
+
+    def move_pointer(self, coordinate_x, coordinate_y):
+        self.mouse.move(coordinate_x,coordinate_y)
+        sleep(Controller.wait)
+
+def main():
+    controller = Controller()
+    controller.type_button(keyboard.Key.cmd_l)
+    controller.type('paint')
+    controller.type_button(keyboard.Key.enter)
+
+    controller.press_and_hold(keyboard.Key.cmd_l, keyboard.Key.up)
+
+    controller.position = (2272, 93)
+    controller.click_button(mouse.Button.left)
+    controller.position = (2790, 133)
+    controller.click_button(mouse.Button.left)
+    controller.position = (2790, 317)
+    controller.click_button(mouse.Button.left)
+    controller.position = (2119, 499)
+    controller.click_button(mouse.Button.left)
+    # for _ in range(250):
+    #     self.mouse.move(1, 0)
+    #     sleep(0.0001)
+    # self.mouse.release(mouse.Button.left)
+main()
