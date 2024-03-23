@@ -1,0 +1,22 @@
+{
+  "steps":[
+    {
+      "Type":
+      {
+        "text": "paint"
+      }
+    },
+    {
+      "ControllerFunction2":{
+        "argument_name1a":"value/int",
+        "argument_name1b":"value/int"
+      }
+    },
+    {
+      "ControllerFunction3":{
+        "argument_name1a":"value/int",
+        "argument_name1b":"value/int"
+      }
+    }
+  ]
+}
